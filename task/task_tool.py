@@ -18,7 +18,7 @@ class Task_Tool(object):
 
     def __init__(self,logger,is_filter=True):
         '''
-        params: is_filter ->是否启用ScalableBloomFilter
+        params: is_filter ->是否对任务生成函数启用ScalableBloomFilter
         '''
 
         self.queue = Queue()
@@ -141,19 +141,50 @@ class Task_Tool(object):
         table.close()
 
 
-    def execute_task(self,execute_func,e_kw,sleep=10,times=30):
+    def execute_task(self,execute_func,e_kw,sbf=None,sleep=10,times=30):
+        '''
+        params: execute_func -->任务处理函数
+        params: e_kw  -->execute_func 的keyword参数
+        params: sbf  -->对任务处理结果进行过滤
+        '''
 
         table =  Table(logger=self.logger)
-        e_kw = dict(e_kw,table=table) 
+        e_kw = dict(e_kw,table=table)
+
         self.loop_task(execute_func=execute_func,e_kw=e_kw,flag=0,sleep=sleep,times=times)
         table.close()
 
 
+    def add_sbf(self,query=None):
+        '''
+        params: query -->mysql 查询语句
+        过滤任务处理结果
+        '''
 
-    def thread_tasks(self,generate_func_name,execute_func,g_kw={},e_kw={},t_n=2,g_sleep=180,g_times=20,e_sleep=10,e_times=36):
+        if query is None:
+            return None
+
+        sbf = ScalableBloomFilter()
+        table = Table(logger=self.logger)
+        result_dict = table.execute(query=query)
+        data = result_dict.get('data')
+        for each in data:
+            id = each.get('id')
+            sbf.add(int(id))
+        table.close()
+        return sbf
+
+
+    def thread_tasks(self,generate_func_name,execute_func,g_kw={},e_kw={},t_n=2,query=None,g_sleep=180,g_times=20,e_sleep=10,e_times=36):
 
         tasks= [Thread(target=self.generate_task,name='Thread-generate',kwargs=dict(generate_func_name=generate_func_name,g_kw=g_kw,
                                                                                     sleep=g_sleep,times=g_times))]
+
+        
+        sbf = self.add_sbf(query=query)
+        if sbf is not None:
+            e_kw = dict(e_kw,sbf=sbf) 
+   
 
         for i in range(t_n):
             t = Thread(target=self.execute_task,name='Thread-execute-%d'%(i+1),kwargs=dict(execute_func=execute_func,e_kw=e_kw,

@@ -63,7 +63,7 @@ def fix(is_test=False):
     logger = Log(filename=u'fix.log',name ='fix').Logger
     table = Table(logger=logger)
 
-    ignore_list =[63,36]
+    ignore_list =[63,]
     ##fsize=63，缺失的章节；fsize=36,服务器上的该章节也丢失了
     fsize_list =[1053,36,63,]
     fsize_set = set(fsize_list).difference(set(ignore_list)) 
@@ -78,6 +78,6 @@ def fix(is_test=False):
 
 if __name__ =='__main__':
 
-    fix(False)
-    # analayze()
+    # fix(True)
+    analayze()
     pass

@@ -30,7 +30,7 @@ class Book(Root):
             href=tag.get('href')
             tag.get('href')
             url='%s/%s'%(self.host,href)
-            id = url.rsplit('=',1)[-1]
+            id = int(url.rsplit('=',1)[-1])
 
             message=u'from category_url=%s,get title=%s,url=%s'%(self.url,title,url)
             self.logger.info(message)
