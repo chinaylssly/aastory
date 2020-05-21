@@ -65,8 +65,15 @@ def execute_item(table,sbf,queue,is_test=False):
     book_id = data.get('id')
     book = data.get('book')
 
-    item = Item(url=book_url,logger=table.logger)
-    core_execute_item(item=item,book=book,category=category,book_id=book_id,table=table,sbf=sbf,is_test=is_test)
+    try:
+        item = Item(url=book_url,logger=table.logger)
+        core_execute_item(item=item,book=book,category=category,book_id=book_id,table=table,sbf=sbf,is_test=is_test)
+    except Exception,e:
+        message = u'catch Exception:%s when execute item,put data:%s back to queue'%(e,json.dumps(data,ensure_ascii=False))
+        table.logger.error(message)
+        queue.put(data)
+
+
 
 
 

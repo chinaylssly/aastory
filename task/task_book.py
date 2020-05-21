@@ -66,13 +66,18 @@ def execute_book(table,queue,sbf,is_test=False):
     data = queue.get(block=True,timeout=30)
     category = data.get('category')
     category_url = data.get('url')
+    try:
+        book = Book(url=category_url,logger=table.logger)
+        next_url = core_execute_book(table=table,book=book,category=category,sbf=sbf,is_test=is_test)
+        while next_url:
+            ##处理下一页
+            book = Book(url=next_url,logger=table.logger)
+            next_url =core_execute_book(table=table,book=book,category=category,sbf=sbf,is_test=is_test)
+    except Exception,e:
+        message = u'catch Exception:%s when execute book,put data:%s back to queue'%(e,json.dumps(data,ensure_ascii=False))
+        table.logger.error(message)
+        queue.put(data)
 
-    book = Book(url=category_url,logger=table.logger)
-    next_url = core_execute_book(table=table,book=book,category=category,sbf=sbf,is_test=is_test)
-    while next_url:
-        ##处理下一页
-        book = Book(url=next_url,logger=table.logger)
-        next_url =core_execute_book(table=table,book=book,category=category,sbf=sbf,is_test=is_test)
 
 
 

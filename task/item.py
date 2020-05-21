@@ -42,7 +42,7 @@ class Item(Root):
             self.logger.info(message)
             # print message
 
-            yield dict(title=title,url=url,id=id,)
+            yield dict(title=title,url=url,id=int(id))
 
     def get_xingzhi(self,):
 

@@ -30,13 +30,13 @@ class Book(Root):
             href=tag.get('href')
             tag.get('href')
             url='%s/%s'%(self.host,href)
-            id = int(url.rsplit('=',1)[-1])
+            id = url.rsplit('=',1)[-1]
 
             message=u'from category_url=%s,get title=%s,url=%s'%(self.url,title,url)
             self.logger.info(message)
             # print message
 
-            yield dict(title=title,url=url,id=id)
+            yield dict(title=title,url=url,id=int(id))
 
     def get_next(self):
         ##获取下一页url

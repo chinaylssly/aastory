@@ -57,6 +57,12 @@ class Task_Tool(object):
                 except:
                     message=u'catch exception:%s'%(format_exc())
                     self.logger.debug(message)
+                    if flag:
+                        ##如果是任务生成函数，捕捉到的异常是没有新任务放入queue中，需要在此处设置break，避免因一直无法产生新任务在此处死循环
+                        break
+                    else:
+                        ##如果是任务处理函数，捕捉到的异常通常是任务处理函数出错了，不能在此处设置break，避免因处理函数一次出错导致白白sleep
+                        pass
                     
 
                 if flag:

@@ -69,9 +69,9 @@ class Root(object):
                 self.html=requests.get(url=self.url,headers=headers,proxies=PROXIES,timeout=30).content
                 self.root=etree.HTML(self.html)
                 time.sleep(PER_REQUESTS_DELAY)
-            except:
-                message=u'request url:%s catch excepttion:%s'%(self.url,format_exc())
-                self.logger.debug(message)
+            except Exception,e:
+                message=u'request url:%s catch exception:%s'%(self.url,e)
+                raise Exception,message
 
 
     def get_soup(self,):

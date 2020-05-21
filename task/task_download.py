@@ -54,20 +54,16 @@ def execute_download(table,queue,logger,is_test=False):
     filename = u'%d-%s.txt'%(id,item)
     filepath = u'%s/%s'%(filefolder,filename)
 
-    # if os.path.exists(filepath):
-    #     message = u'filepath:%s already exists!'%(filepath)
-    #     logger.info(message)
-    #     flag = True
-    # else:
-
-    #     download = Download(url=url,logger=logger,filepath=filepath)
-    #     flag = download.download()
-    
     download = Download(url=url,logger=logger,filepath=filepath)
     
     try:
         flag = download.download()
-    except:
+
+    except Exception,e:
+        
+        message = u'catch Exception:%s when execute download,put data:%s back to queue'%(e,json.dumps(data,ensure_ascii=False))
+        table.logger.error(message)
+        queue.put(data)
         flag = False
 
     if flag:

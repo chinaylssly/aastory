@@ -77,11 +77,10 @@ class Download(Root):
                 # print message
 
                 return None
-        except:
+        except Exception,e:
 
-            message=u'catch exception when download from url:%s,Exception:%s'%(self.url,format_exc())
-            self.logger.error(message)
-            return None
+            message=u'catch exception when download from url:%s,Exception:%s'%(self.url,e)
+            raise Exception,message
 
 
 

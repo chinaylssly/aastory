@@ -97,7 +97,7 @@ def test_task_table(t_n=5,is_test=True):
 
 if __name__ == '__main__':
 
-    test_task_table()
+    test_task_table(t_n=30,is_test=False)
     pass
 
 
