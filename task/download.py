@@ -13,7 +13,7 @@ import re,os
 
 class Download(Root):
 
-    def __init__(self,url='https://www.aastory.club/read.php?id=30435',local=None,logger=None,filepath=u'book.txt',):
+    def __init__(self,url='https://www.aastory.club/read.php?id=201093',local=None,logger=None,filepath=u'book.txt',):
 
         Root.__init__(self,url=url,local=local,logger=logger)
         self.filepath = filepath
@@ -35,7 +35,13 @@ class Download(Root):
                 self.logger.info(message)
                 # print message
 
-                contentid=self.url.rsplit('=')[-1]
+                try:
+                    contentid = int(self.url.rsplit('=')[-1])
+                except:
+                    # print self.url
+                    contentid = int(self.url.rsplit('-',1)[-1].rsplit('.',1)[0])
+
+                # print contentid
                 content_url=u'https://www.aastory.club/_getcontent.php?id=%s&v=%s'%(contentid,v)
 
                 root=Root(url=content_url,logger=self.logger)
@@ -45,6 +51,8 @@ class Download(Root):
 
                 html=root.html
                 text=html.replace('</p>','\n').replace('<p>','').strip()
+                text = re.sub(r'<.*?>.*?</.*?>','',text)
+
 
                 if isinstance(text,unicode):
                     text=text.encode('utf-8','ignore')
@@ -86,8 +94,9 @@ class Download(Root):
 
 
 def test():
-
-    download = Download()
+    url = u'https://www.aavbook.fun/read.php?id=200985'
+    url = u'https://www.aavbook.fun/read-200978.html'
+    download = Download(url=url)
     download.download()
 
 

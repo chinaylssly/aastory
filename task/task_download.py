@@ -81,7 +81,7 @@ def execute_download(table,queue,logger,is_test=False):
     
 
 
-def task_download(logger,limit=1000,t_n=4,g_sleep=180,g_times=40,e_sleep=10,e_times=30,is_filter=True,is_test=False):
+def task_download(logger,limit=1000,t_n=4,g_sleep=180,g_times=140,e_sleep=10,e_times=30,is_filter=True,is_test=False):
     ##多线程任务函数
     
     task_tool =Task_Tool(logger=logger,is_filter=is_filter)

@@ -18,7 +18,9 @@ class Item(Root):
     def __init__(self,url,local=None,logger=None):
 
         self.bookid=url.rsplit('=',1)[-1]
-        self.book_url=url
+        
+        self.book_url=u'https://www.aavbook.fun/book-%s.html'%(self.bookid)
+        
         url=u'https://www.aastory.club/archive.php?id=%s'%(self.bookid)
         Root.__init__(self,url=url,local=local,logger=logger)
 
@@ -36,7 +38,7 @@ class Item(Root):
             host=self.url.rsplit('/',1)[0]
 
             url=u'%s/%s'%(host,href)
-            id = url.rsplit('=',1)[-1]
+            id = url.rsplit('-',1)[-1].rsplit('.',1)[0]
 
             message=u'from url=%s get title=%s ,url=%s'%(self.url,title,url)
             self.logger.info(message)
@@ -73,11 +75,9 @@ class Item(Root):
 
 def test():
 
-    url='https://www.aastory.club/book.php?id=1'
+    url='https://www.aavbook.fun/archive.php?id=2858'
     book=Item(url)
     status=book.get_xingzhi()
-    print status
-
     info=book.get_item()
     import json 
     for item in info:

@@ -65,10 +65,10 @@ def fix(is_test=False):
 
     ignore_list =[63,36]
     ##fsize=63，缺失的章节；fsize=36,服务器上的该章节也丢失了
-    fsize_list =[1053,36,63,]
+    fsize_list =[1053,36,63,0]
     fsize_set = set(fsize_list).difference(set(ignore_list)) 
 
-    folders = [DOWNLOAD_FOLDER,u'f:/data/story']
+    folders = [DOWNLOAD_FOLDER,u'f:/data/story'][0:1]
     for folder in folders:
         print folder
         fix_error_file(folder=folder,table=table,fsize_list=fsize_set,is_test=is_test)

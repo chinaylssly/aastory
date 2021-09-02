@@ -79,12 +79,12 @@ def execute_item(table,sbf,queue,is_test=False):
 
 
 
-def task_item(logger,t_n=4,g_sleep=180,g_times=20,e_sleep=10,e_times=30,is_filter=True,is_test=False):
+def task_item(logger,t_n=4,g_sleep=180,g_times=1,e_sleep=10,e_times=30,is_filter=True,is_test=False):
     ##多线程任务函数
     
     task_tool =Task_Tool(logger=logger,is_filter=is_filter)
     generate_func_name = u'check_table_book'
-    g_kw = {}
+    g_kw = dict()
     e_kw = dict(queue=task_tool.queue,is_test=is_test)
     query = u'select id from item'
 

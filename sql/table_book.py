@@ -37,7 +37,7 @@ class Table_Book(MySQL):
         self.execute(query=query)
 
 
-    def check_table_book(self,is_filter=True,rate=100):
+    def check_table_book(self,is_filter=True,rate=100,is_limit=False,limit=20):
         ##查询未下载完全book
 
         if is_filter:
@@ -45,13 +45,26 @@ class Table_Book(MySQL):
         else:
             filter_str = u''
 
-        query='select id,url,book,category,d_count,total from book where is_finish<1 %s order by is_finish asc, rate desc'%(filter_str)
+        if is_limit:
+
+            limit_str = u'limit %s'%(limit)
+        else:
+            limit_str = u''
+
+        query='select id,url,book,category,d_count,total from book where is_finish<1 %s order by is_finish asc, rate desc %s'%(filter_str,limit_str)
         return self.execute(query=query)
 
 
-    def check_table_book_for_timer(self,):
+    def check_table_book_for_timer(self,is_limit=False,limit=100):
 
-        query='select id,url,book,category,d_count,total from book  order by is_finish desc, rate desc'
+
+        if is_limit:
+
+            limit_str = u'limit %s'%(limit)
+        else:
+            limit_str = u''
+
+        query='select id,url,book,category,d_count,total from book  order by rate asc, total desc,is_finish asc %s'%(limit_str)
         return self.execute(query=query)
 
 

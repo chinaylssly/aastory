@@ -54,7 +54,7 @@ def task_table_book(logger,t_n=4,g_sleep=0,g_times=1,e_sleep=10,e_times=30,is_fi
     
     task_tool =Task_Tool(logger=logger,is_filter=is_filter)
     generate_func_name = u'check_table_book_for_timer'
-    g_kw = {}
+    g_kw = dict()
     e_kw = dict(queue=task_tool.queue,logger=logger,is_test=is_test)
 
     tasks = task_tool.thread_tasks(generate_func_name=generate_func_name,execute_func=execute_update_book,g_kw=g_kw,e_kw=e_kw,

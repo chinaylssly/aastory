@@ -36,7 +36,7 @@ DATABASE = u'aabook'
 WEBHOSTS = ['aastory.club','aabook.xyz','aavbook.fun','aabook.men']
 
 #更换域名
-IS_CHANGE_HOST = False
-HOST_INDEX = 0
+IS_CHANGE_HOST = True
+HOST_INDEX = 2
 
 

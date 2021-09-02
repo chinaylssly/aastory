@@ -89,6 +89,11 @@ class Root(object):
 
         return etree.tostring(element)
 
+    @classmethod
+    def to_etree(self,html):
+
+        return etree.HTML(html)
+
 
 def test():
 
